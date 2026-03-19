@@ -1,50 +1,169 @@
-# Welcome to your Expo app 👋
+# Wini - 룸메이트 감정 커뮤니케이션 앱
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+> DND 13기 4팀 프론트엔드 프로젝트
 
-## Get started
+룸메이트와 감정 편지를 주고받으며 서로의 마음을 이해하고 함께 성장하는 크로스플랫폼 모바일 앱입니다.
 
-1. Install dependencies
+---
 
-   ```bash
-   npm install
-   ```
+## 주요 기능
 
-2. Start the app
+- **마음 편지 작성** - 감정 선택 → 상황/행동 → 약속 설정의 단계별 편지 작성 플로우
+- **홈 화면** - 오늘의 편지, 룸메이트 상태, 통계 요약, 상태 메시지 관리
+- **아카이브** - 저장된 편지 목록 및 상세 조회
+- **통계** - 주간 감정 리포트, 성장 지표, 키워드 분석
+- **룸메이트 매칭** - 초대 코드 기반 방 생성 및 연결
+- **실시간 알림** - FCM(Firebase Cloud Messaging) 및 SSE(Server-Sent Events)
 
-   ```bash
-   npx expo start
-   ```
+---
 
-In the output, you'll find options to open the app in a
+## 기술 스택
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+| 분류            | 기술                             |
+| --------------- | -------------------------------- |
+| Framework       | React Native 0.79.5, Expo 53     |
+| Language        | TypeScript 5.8.3                 |
+| Routing         | Expo Router 5 (파일 기반 라우팅) |
+| 서버 상태       | TanStack React Query 5           |
+| 클라이언트 상태 | Zustand 5                        |
+| HTTP Client     | Axios 1.11                       |
+| 인증            | Kakao OAuth, Apple Sign-In       |
+| 푸시 알림       | Firebase Cloud Messaging         |
+| 실시간 통신     | Server-Sent Events (SSE)         |
+| 애니메이션      | React Native Reanimated 3        |
+| 로컬 스토리지   | AsyncStorage                     |
+| 폰트            | Pretendard                       |
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+---
 
-## Get a fresh project
+## 시작하기
 
-When you're ready, run:
+### 요구사항
+
+- Node.js v22.18.0 (`.nvmrc` 참고)
+- Expo CLI
+- iOS 개발: Xcode (macOS 필요)
+- Android 개발: Android Studio
+
+### 설치
 
 ```bash
-npm run reset-project
+# 의존성 설치
+npm install
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+### 환경 변수 설정
 
-## Learn more
+`.env.example`을 참고하여 `.env` 파일을 생성하세요.
 
-To learn more about developing your project with Expo, look at the following resources:
+```env
+EXPO_PUBLIC_API_URL=https://app.wini.my
+EXPO_PUBLIC_ENV=development
+EXPO_PUBLIC_IS_MATCHED=false
+EXPO_PUBLIC_SAMPLE_ACCESS_TOKEN=your_token_here
+```
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+### 개발 서버 실행
 
-## Join the community
+```bash
+# 플랫폼 선택 메뉴와 함께 시작
+npm run start
 
-Join our community of developers creating universal apps.
+# iOS 시뮬레이터
+npm run ios
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+# Android 에뮬레이터
+npm run android
+
+# 웹 브라우저
+npm run web
+```
+
+### 실기기 빌드
+
+```bash
+# iOS 실기기
+npm run build:local:ios
+
+# Android 실기기
+npm run build:local:android
+```
+
+---
+
+## 프로젝트 구조
+
+```
+dnd-13th-4-frontend/
+├── app/                      # Expo Router 파일 기반 라우팅
+│   ├── _layout.tsx           # 루트 레이아웃 (인증, 알림, 쿼리 초기화)
+│   ├── (tabs)/               # 탭 네비게이션
+│   │   ├── index.tsx         # 홈 화면
+│   │   ├── Statistics.tsx    # 통계
+│   │   ├── MyPage.tsx        # 마이페이지
+│   │   ├── archive/          # 아카이브 (목록, 상세)
+│   │   └── notes/            # 편지 작성 플로우
+│   ├── matching/             # 룸메이트 매칭
+│   └── onboarding/           # 온보딩 / 로그인
+├── components/               # 재사용 UI 컴포넌트
+├── hooks/                    # 커스텀 훅
+│   └── api/                  # React Query 훅
+├── lib/                      # 유틸리티 라이브러리
+│   ├── api/                  # Axios 인스턴스 & 인터셉터
+│   ├── auth/                 # 토큰 관리
+│   └── notifications/        # FCM 설정
+├── services/                 # 비즈니스 로직 (인증 서비스)
+├── store/                    # Zustand 스토어
+├── constants/                # 앱 상수 (컬러, 타이포그래피, API 경로)
+└── types/                    # TypeScript 타입 정의
+```
+
+---
+
+## 아키텍처
+
+### 상태 관리 전략
+
+- **React Query** - 서버 상태 (API 데이터 캐싱, 동기화)
+- **Zustand** - 로컬 UI 상태 (편지 작성 폼, 토스트)
+- **AsyncStorage** - 영속성 데이터 (인증 토큰)
+
+### 인증 플로우
+
+1. Kakao OAuth / Apple Sign-In으로 소셜 로그인
+2. JWT Access Token + Refresh Token 발급
+3. Axios 인터셉터를 통해 자동으로 Authorization 헤더 주입
+4. 401 응답 시 Refresh Token으로 자동 토큰 재발급
+
+### 탭 네비게이션
+
+5개 탭: 홈 | 아카이브 | 작성(중앙 버튼) | 통계 | 마이페이지
+
+---
+
+## EAS 빌드 (배포)
+
+```bash
+# 개발 빌드
+eas build --platform android --profile development
+eas build --platform ios --profile development
+
+# 스테이징
+eas build --profile staging
+
+# 프로덕션
+eas build --profile production
+```
+
+---
+
+## 코드 스타일
+
+```bash
+# 린트 검사
+npm run lint
+```
+
+- ESLint (Expo config + TanStack Query plugin)
+- Prettier (80자 줄 너비, 싱글 쿼트)
+- TypeScript strict 모드
